@@ -221,3 +221,21 @@
   ;; Enable in all Eshell buffers.
   (eshell-syntax-highlighting-global-mode +1))
 
+
+;; Function to setup company-mode in sh-mode
+(defun my/sh-mode-setup-company ()
+  ;; Enable company-mode
+  (company-mode 1)
+  ;; Configure company-shell
+  (require 'company-shell)
+  (setq-local company-backends '((company-shell company-shell-env company-shell-history company-files company-keywords)))
+  (setq-local company-keywords-alist
+              '((sh-mode . ("if" "then" "else" "elif" "fi" "case" "esac" "for" "select"
+                            "while" "until" "do" "done" "in" "function" "time" "coproc"
+                            "!" "{"
+                            "}" "[" "]"))))
+  ;; Remove company-ispell from backends in sh-mode
+  (setq-local company-backends (remove 'company-ispell company-backends)))
+
+;; Add the setup function to sh-mode-hook
+(add-hook 'sh-mode-hook 'my/sh-mode-setup-company)
