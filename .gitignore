@@ -1,0 +1,11 @@
+# Ignore everything
+*
+
+# Allow directories to be included so we can track specific files within them
+!*/
+
+# Include the specific file in the root directory
+!init.el
+
+# Ensure .gitignore itself is not ignored
+!.gitignore
