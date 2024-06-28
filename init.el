@@ -188,3 +188,14 @@
         (unless (package-installed-p package)
           (package-install package)))
       (forward-line 1))))
+
+
+;; Function to setup company-mode in eshell
+(defun my/eshell-setup-company ()
+  ;; Enable company-mode
+  (company-mode 1)
+  ;; Remove company-ispell from backends in eshell
+  (setq-local company-backends (remove 'company-ispell company-backends)))
+
+;; Add the setup function to eshell-mode-hook
+(add-hook 'eshell-mode-hook 'my/eshell-setup-company)
