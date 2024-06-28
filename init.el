@@ -10,7 +10,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(eshell-syntax-highlighting company-spell smartparens company-flx company-auctex company pdf-tools auctex)))
+   '(company-prescient company-shell eshell-syntax-highlighting company-spell smartparens company-flx company-auctex company pdf-tools auctex)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -190,10 +190,23 @@
       (forward-line 1))))
 
 
+;; Enable prescient for sorting and filtering
+(require 'prescient)
+(prescient-persist-mode 1) ;; Enable persistence
+
+;; Enable company-prescient mode
+(require 'company-prescient)
+(company-prescient-mode 1)
+
 ;; Function to setup company-mode in eshell
 (defun my/eshell-setup-company ()
   ;; Enable company-mode
   (company-mode 1)
+
+  ;; Configure company-shell
+  (require 'company-shell)
+  (setq-local company-backends '((company-shell company-shell-env company-shell-history company-files)))
+
   ;; Remove company-ispell from backends in eshell
   (setq-local company-backends (remove 'company-ispell company-backends)))
 
