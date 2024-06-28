@@ -10,7 +10,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(company-spell smartparens company-flx company-auctex company pdf-tools auctex)))
+   '(eshell-syntax-highlighting company-spell smartparens company-flx company-auctex company pdf-tools auctex)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -199,3 +199,12 @@
 
 ;; Add the setup function to eshell-mode-hook
 (add-hook 'eshell-mode-hook 'my/eshell-setup-company)
+
+;; Ensure eshell-syntax-highlighting is installed and loaded
+(use-package eshell-syntax-highlighting
+  :after eshell
+  :ensure t ;; Install if not already installed.
+  :config
+  ;; Enable in all Eshell buffers.
+  (eshell-syntax-highlighting-global-mode +1))
+
