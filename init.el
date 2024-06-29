@@ -10,7 +10,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(company-prescient company-shell eshell-syntax-highlighting company-spell smartparens company-flx company-auctex company pdf-tools auctex)))
+   '(elpy company-prescient company-shell eshell-syntax-highlighting company-spell smartparens company-flx company-auctex company pdf-tools auctex)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -239,3 +239,36 @@
 
 ;; Add the setup function to sh-mode-hook
 (add-hook 'sh-mode-hook 'my/sh-mode-setup-company)
+
+
+;; Enable Elpy
+(elpy-enable)
+
+;; Set the path to your virtual environment
+(setq elpy-rpc-virtualenv-path "~/.emacs.d/.venv")
+
+;; Use the virtual environment at ~/.venv
+(setq elpy-rpc-python-command "~/.emacs.d/.venv/bin/python")
+
+;; Use black for formatting code
+(setq elpy-formatter 'black)
+
+(when (require 'flycheck nil t)
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+;; Set Flycheck to use the virtual environment
+(setq flycheck-python-pycompile-executable "~/.emacs.d/.venv/bin/python")
+
+;; Set the Python interpreter for the shell
+(setq python-shell-interpreter "~/.emacs.d/.venv/bin/ipython"
+      python-shell-interpreter-args "-i --simple-prompt --InteractiveShell.display_page=True")
+
+(defun my/python-mode-hook ()
+  (pyvenv-activate "~/.emacs.d/.venv"))  ; Adjust delay as necessary
+
+(add-hook 'python-mode-hook 'my/python-mode-hook)
+
+(add-hook 'elpy-mode-hook (lambda ()
+                            (add-hook 'before-save-hook
+                                      'elpy-format-code nil t)))
